@@ -3,3 +3,4 @@ RIT BrickHack 2023 Project
 
 Authors:
 Andrew Bush
+Albert Jiro Hynes
