@@ -47,10 +47,9 @@ def incoming_sms():
     symptoms = []
     choice = body.split(" ", 1)[0].lower()
     if choice == "about":
-        resp.message("You have reached MedText, a SMS application for receiving AI input on your symptoms")
+        resp.message("You have reached MedText, a SMS-based application for providing AI input on your medical symptoms")
     elif choice == "symptoms":
         reader = csv.reader(body.split('\n'), delimiter=',')
-        result = ""
         for row in reader:  # each row is a list
             symptomsList.append(row)
         for s in symptomsList[0][1:]:
