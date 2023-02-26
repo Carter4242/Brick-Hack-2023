@@ -11,7 +11,7 @@ from textblob import TextBlob
 
 import csv
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 def generate_response(prompt):
@@ -24,7 +24,7 @@ def generate_response(prompt):
         max_tokens=1024,
         n=1,
         stop=None,
-        temperature=0.8,
+        temperature=0.85,
     )
 
     message = completions.choices[0].text
@@ -57,12 +57,13 @@ def incoming_sms():
             sentence = TextBlob(j)
             result = sentence.correct()
             symptoms.append(str(result))
-        prompt = "What illness may I have if I exhibit: " + str(symptoms)
+
+        prompt = "What illness may is associated with the following symptoms: " + str(symptoms)
         response = generate_response(prompt)
         resp.message("AI Analysis: " + response)
     else:
         resp.message("Invalid input for the MedTex service. To perform a query, enter 'symptoms' follow by a comma "
-                     "separated list of the symptoms you are experiencing. \n Ex: symptoms, headache,fever")
+                     "separated list of the symptoms you are experiencing. \n Ex: symptoms headache, fever, sore throat")
 
     print(symptoms)
     return str(resp)
