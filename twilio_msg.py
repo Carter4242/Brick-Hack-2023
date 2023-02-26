@@ -1,10 +1,35 @@
+"""
+file: twilio_msg.py
+description: Driver code for twilio messaging service & AI connections
+language: python3
+author: Andrew Bush (apb2471@rit.edu)
+"""
+
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 from textblob import TextBlob
 
-
-
 import csv
+import openai
+openai.api_key = "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"
+
+
+def generate_response(prompt):
+    model_engine = "text-davinci-003"
+    prompt = (f"{prompt}")
+
+    completions = openai.Completion.create(
+        engine=model_engine,
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.8,
+    )
+
+    message = completions.choices[0].text
+    return message.strip()
+
 
 app = Flask(__name__)
 
@@ -25,6 +50,7 @@ def incoming_sms():
         resp.message("You have reached MedText, a SMS application for receiving AI input on your symptoms")
     elif choice == "symptoms":
         reader = csv.reader(body.split('\n'), delimiter=',')
+        result = ""
         for row in reader:  # each row is a list
             symptomsList.append(row)
         for s in symptomsList[0][1:]:
@@ -32,7 +58,9 @@ def incoming_sms():
             sentence = TextBlob(j)
             result = sentence.correct()
             symptoms.append(str(result))
-        resp.message("Symptoms received, we will get back to you in a moment...\n")
+        prompt = "What illness may I have if I exhibit: " + str(symptoms)
+        response = generate_response(prompt)
+        resp.message("AI Analysis: " + response)
     else:
         resp.message("Invalid input for the MedTex service. To perform a query, enter 'symptoms' follow by a comma "
                      "separated list of the symptoms you are experiencing. \n Ex: symptoms, headache,fever")
