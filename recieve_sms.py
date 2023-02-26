@@ -29,7 +29,7 @@ def incoming_sms():
         for row in reader:  # each row is a list
             symptomsList.append(row)
         for s in symptomsList[0][1:]:
-            j = s.lower().stripls
+            j = s.lower().strip
             sentence = TextBlob(j)
             result = sentence.correct()
             symptoms.append(str(result))
