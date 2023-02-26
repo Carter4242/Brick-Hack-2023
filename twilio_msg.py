@@ -9,7 +9,7 @@ from flask import Flask, request, session
 from twilio.twiml.messaging_response import MessagingResponse
 from textblob import TextBlob
 
-from SymptomSuggestion import twilioInputSymptoms, twilioMoreDetails, twilioPrintSymptoms
+from SymptomSuggestion import twilioInputSymptoms, twilioPrintSymptoms
 
 import csv
 import openai
